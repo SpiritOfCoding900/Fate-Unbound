@@ -32,13 +32,7 @@ public class UIPlayerSelection : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        PauseGame();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // PauseGame();
     }
 
     public void ResumeGame()
@@ -101,4 +95,5 @@ public class UIPlayerSelection : MonoBehaviour
 
         // Do something with index, like pass it to GameManager or store selected class
     }
+
 }

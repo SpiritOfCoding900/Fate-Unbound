@@ -23,21 +23,22 @@ public class UIMainMenu : MonoBehaviour
 
     }
 
+    private void OnPlayClick()
+    {
+        AudioManager.Instance.SFXSound(SoundID.Confirm);
+        UIManager.Instance.Open(GameUIID.SaveSlotData);
+    }
+
     private void OnSettingsClick()
     {
         AudioManager.Instance.SFXSound(SoundID.ButtonClick);
         UIManager.Instance.Open(GameUIID.Settings);
     }
 
-    private void OnPlayClick()
-    {
-        AudioManager.Instance.SFXSound(SoundID.Confirm);
-        UIManager.Instance.OpenReplace(GameUIID.Title);
-    }
 
     private void OnQuitClick()
     {
         AudioManager.Instance.SFXSound(SoundID.Cancel);
-        UIManager.Instance.OpenReplace(GameUIID.Title);
+        Application.Quit();
     }
 }

@@ -10,6 +10,10 @@ public class Player : SimpleSingleton<Player>
     public float MaxHP = 10;
     public float HP;
 
+    public float ATK;
+    public float DEF;
+    public float RollRecRate;
+
     public float moveSpeed = 5f;
     public string description;
 

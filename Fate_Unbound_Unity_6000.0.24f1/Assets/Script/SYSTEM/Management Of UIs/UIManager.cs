@@ -103,26 +103,16 @@ public enum GameUIID
     HUD,
     Logo,
     Title,
-    GuildMenu,
-    ShopMenu,
-    TrainingMenu,
-    StatsMenu,
-    HomeMenu,
-    BlueScreen,
     YouWin,
     YouLose,
-    LevelMenuChapter1,
-    LevelMenuChapter2,
-    LevelMenuChapter3,
-    LevelMenuChapter4, 
-    LevelCompleteChapter1,
-    LevelCompleteChapter2,
-    LevelCompleteChapter3,
-    LevelCompleteChapter4,
     Tutorial,
     TutorialScreen,
-    PlayerSelection,
-    LevelUpSelection,
+
+
+    SaveSlotData,
+    SelectYourClass,
+    ClericCinematic,
+    TutorialLevel,
 }
 
 public enum LevelUIID

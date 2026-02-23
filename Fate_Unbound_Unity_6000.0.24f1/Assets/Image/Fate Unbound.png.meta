@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fate Unbound_0: -668228465396850109
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

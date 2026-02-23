@@ -67,6 +67,7 @@
     <Compile Include="Assets\Script\SceneStub.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Audio\SoundManager.cs" />
+    <Compile Include="Assets\Script\SYSTEM\UIScripts\UIOpenPanel.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerGoldDisplay.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Game\CameraFollow.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIOpenScene.cs" />

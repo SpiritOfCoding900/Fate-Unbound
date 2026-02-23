@@ -80,6 +80,6 @@ public class PlayerLevelUpStats : MonoBehaviour
     public void LevelUpReward()
     {
         Time.timeScale = 0f;
-        UIManager.Instance.OpenReplace(GameUIID.LevelUpSelection);
+        UIManager.Instance.OpenReplace(GameUIID.Settings);
     }
 }

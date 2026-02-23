@@ -58,7 +58,7 @@ public class UITutorialScreen : MonoBehaviour
     {
         Time.timeScale = 1f;
         UIManager.Instance.CloseAll();
-        UIManager.Instance.OpenReplace(GameUIID.PlayerSelection);
+        UIManager.Instance.OpenReplace(GameUIID.Settings);
     }
 
     public void PauseGame()

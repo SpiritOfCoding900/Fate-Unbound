@@ -9,6 +9,6 @@ public class GameStart : MonoBehaviour
         GameManager.Instance.spawnPlayerOnce(new Vector3(0, 0, 0));
 
         if (OpenPlayerSelect && !UIManager.Instance.IsUIOpen(GameUIID.TutorialScreen))
-            UIManager.Instance.Open(GameUIID.PlayerSelection);
+            UIManager.Instance.Open(GameUIID.Settings);
     }
 }
