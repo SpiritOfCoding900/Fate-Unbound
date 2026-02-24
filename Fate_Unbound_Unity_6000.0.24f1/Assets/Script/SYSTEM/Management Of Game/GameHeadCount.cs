@@ -32,7 +32,7 @@ public class GameHeadCount : SimpleSingleton<GameHeadCount>
         if (hasEnded) return;
 
         // Check for player defeat
-        if (pm.HP <= 0)
+        if (pm.CurrentHP <= 0)
         {
             UIManager.Instance.OpenReplace(openUIForLosing);
             Destroy(pm.gameObject, 0.75f);

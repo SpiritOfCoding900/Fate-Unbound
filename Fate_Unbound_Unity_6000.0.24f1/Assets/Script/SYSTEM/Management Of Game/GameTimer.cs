@@ -20,7 +20,7 @@ public class GameTimer : SimpleSingleton<GameTimer>, ISceneTargetProvider
     {
         if (timerIsRunning)
         {
-            if (pm.HP <= 0)
+            if (pm.CurrentHP <= 0)
             {
                 timerIsRunning = false;
                 DisplayTime(timeRemaining);

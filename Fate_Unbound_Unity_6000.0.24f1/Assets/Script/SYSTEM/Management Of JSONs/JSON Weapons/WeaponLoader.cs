@@ -21,10 +21,10 @@ public enum WeaponRarity
 [System.Serializable]
 public class Weapon
 {
+    public string weaponName;
     public TypeOfWeapon weaponType;
     public string spritePath;
     public string prefabPath;
-    public string weaponName;
     public int damage;
     public float speed;
     public float cooldownDuration;

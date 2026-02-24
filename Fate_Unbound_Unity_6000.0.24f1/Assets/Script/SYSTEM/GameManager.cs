@@ -7,9 +7,6 @@ public class GameManager : SimpleSingleton<GameManager>
     private Player player01;
     public Player CurrentPlayer { private set; get; }
 
-    [Header("Player's Current Stats: ")]
-    public float currentHealth;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

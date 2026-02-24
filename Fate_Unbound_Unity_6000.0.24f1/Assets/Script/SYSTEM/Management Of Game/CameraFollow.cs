@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        findPlayerTarget(GameManager.Instance.CurrentPlayer.transform);
+        // findPlayerTarget(GameManager.Instance.CurrentPlayer.transform);
         offset = transform.position - target.position;
     }
 
@@ -24,8 +24,8 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
 
-        //targetPos = transform.position = target.position + offset;
-        //transform.position = Vector3.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime);
+        targetPos = transform.position = target.position + offset;
+        transform.position = Vector3.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime);
         transform.position = target.position + offset;
     }
 }

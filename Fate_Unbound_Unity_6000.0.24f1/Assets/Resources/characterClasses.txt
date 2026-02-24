@@ -1,28 +1,37 @@
 {
   "classes": [
     {
-      "className": "Warrior",
+      "className": "Berserker",
+      "spritePath": "Sprites/PlayerClasses/ClassBerserker",
+      "prefabPath": "Prefabs/PlayerClasses/PlayerBerserker",
       "MaxHP": 12,
+      "MaxMP": 12,
       "moveSpeed": 7,
-      "description": "Strong melee fighter with high durability.",
+      "description": "Strong Melee Fighter with The Highest Offense.",
       "ID": 0,
       "starterWeaponPrimary": 2,
       "starterWeaponSecondary": 3
     },
     {
-      "className": "Rogue",
+      "className": "Ranger",
+      "spritePath": "Sprites/PlayerClasses/ClassRanger",
+      "prefabPath": "Prefabs/PlayerClasses/PlayerRanger",
       "MaxHP": 10,
+      "MaxMP": 12,
       "moveSpeed": 9,
-      "description": "Guardian of the forest, fastest amongst all.",
+      "description": "Noble Forces Of Order with Strong Stats and Vast Mana.",
       "ID": 1,
       "starterWeaponPrimary": 0,
       "starterWeaponSecondary": 1
     },
     {
-      "className": "Mage",
+      "className": "Paladin",
+      "spritePath": "Sprites/PlayerClasses/ClassPaladin",
+      "prefabPath": "Prefabs/PlayerClasses/PlayerPaladin",
       "MaxHP": 8,
+      "MaxMP": 12,
       "moveSpeed": 6,
-      "description": "Master of elemental magic, fragile but deadly.",
+      "description": "Guardian of the forest, Fastest Amongst All and Recovers Dodge much Quicker.",
       "ID": 2,
       "starterWeaponPrimary": 4,
       "starterWeaponSecondary": 5

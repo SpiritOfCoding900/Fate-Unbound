@@ -56,6 +56,7 @@ public class UIPlayerSelection : MonoBehaviour
 
                 ui.nameText.text = data.className;
                 ui.hpText.text = data.MaxHP.ToString();
+                ui.hpText.text = data.MaxMP.ToString();
                 ui.speedText.text = data.moveSpeed.ToString();
                 ui.descriptionText.text = data.description;
             }
@@ -75,7 +76,8 @@ public class UIPlayerSelection : MonoBehaviour
         Player.Instance.ID = characterData.ID;
         // Update Player's New class
         Player.Instance.MaxHP = characterData.MaxHP;
-        Player.Instance.HP = Player.Instance.MaxHP;
+        Player.Instance.MaxHP = characterData.MaxMP;
+        Player.Instance.CurrentHP = Player.Instance.MaxHP;
         Player.Instance.moveSpeed = characterData.moveSpeed;
 
         Time.timeScale = 1f;

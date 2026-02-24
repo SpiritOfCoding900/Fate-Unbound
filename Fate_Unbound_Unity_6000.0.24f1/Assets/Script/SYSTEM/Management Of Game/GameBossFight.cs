@@ -23,7 +23,7 @@ public class GameBossFight : MonoBehaviour
         if (hasEnded) return;
 
         // Check if player has died
-        if (pm.HP <= 0 && pm != null)
+        if (pm.CurrentHP <= 0 && pm != null)
         {
             hasEnded = true;
             UIManager.Instance.OpenReplace(openUIForLosing);

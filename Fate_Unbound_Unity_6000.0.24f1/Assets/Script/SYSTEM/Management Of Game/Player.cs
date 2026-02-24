@@ -8,13 +8,20 @@ public class Player : SimpleSingleton<Player>
     public string className;
 
     public float MaxHP = 10;
-    public float HP;
+    public float CurrentHP;
 
-    public float ATK;
-    public float DEF;
-    public float RollRecRate;
+    public float MaxMP = 10;
+    public float CurrentMP;
 
-    public float moveSpeed = 5f;
+    public float MaxSTA = 10;
+    public float CurrentSTA;
+
+    public float ATK = 5;
+    public float DEF = 5;
+
+    public float moveSpeed = 10;
+
+    [TextArea(3,5)]
     public string description;
 
     public int ID;
@@ -35,7 +42,7 @@ public class Player : SimpleSingleton<Player>
     public Vector2 lastMovedVector;
 
     ///This is for the animation - Joycelyn
-    public Animator anim;
+    //public Animator anim;
 
     /// This is for checking which class is selected  - Joycelyn
     UIPlayerSelection playerSelection;
@@ -44,7 +51,9 @@ public class Player : SimpleSingleton<Player>
     {
         rb = GetComponent<Rigidbody2D>();
         lastMovedVector = new Vector2(1, 0f);
-        HP = MaxHP;
+        CurrentHP = MaxHP;
+        CurrentMP = MaxMP;
+        CurrentSTA = MaxSTA;
     }
 
     void Update()
@@ -59,33 +68,33 @@ public class Player : SimpleSingleton<Player>
     }
 
     ///To select the correct class sprites - Jsoycelyn
-    void ClassChecker()
-    {
-        if (ID == 0)
-        {
-            anim.SetBool("isBarb", true);
-            anim.SetBool("isRog", false);
-            anim.SetBool("isAlc", false);
-        }
-        if (ID == 1)
-        {
+    //void ClassChecker()
+    //{
+    //    if (ID == 0)
+    //    {
+    //        anim.SetBool("isBarb", true);
+    //        anim.SetBool("isRog", false);
+    //        anim.SetBool("isAlc", false);
+    //    }
+    //    if (ID == 1)
+    //    {
 
-            anim.SetBool("isRog", true);
-            anim.SetBool("isBarb", false);
-            anim.SetBool("isAlc", false);
-        }
-        if (ID == 2)
-        {
-            anim.SetBool("isAlc", true);
-            anim.SetBool("isBarb", false);
-            anim.SetBool("isRog", false);
-        }
-    }
+    //        anim.SetBool("isRog", true);
+    //        anim.SetBool("isBarb", false);
+    //        anim.SetBool("isAlc", false);
+    //    }
+    //    if (ID == 2)
+    //    {
+    //        anim.SetBool("isAlc", true);
+    //        anim.SetBool("isBarb", false);
+    //        anim.SetBool("isRog", false);
+    //    }
+    //}
 
     void Inputmanagement()
     {
         ///To select the correct class sprites - Jsoycelyn
-        ClassChecker();
+        //ClassChecker();
 
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
@@ -93,7 +102,7 @@ public class Player : SimpleSingleton<Player>
         moveDir = new Vector2(moveX, moveY).normalized;
 
         ///This is for the animation - Joycelyn
-        anim.SetFloat("Walk", -1);
+        //anim.SetFloat("Walk", -1);
 
         if (moveDir.x != 0)
         {
@@ -101,7 +110,7 @@ public class Player : SimpleSingleton<Player>
             lastMovedVector = new Vector2(lastHorizontalVector, 0f);
 
             ///This is for the animation - Joycelyn
-            anim.SetFloat("Walk", Mathf.Abs(lastHorizontalVector));
+            //anim.SetFloat("Walk", Mathf.Abs(lastHorizontalVector));
             var player = gameObject.GetComponent<SpriteRenderer>();
             if (lastMovedVector.x < 0) 
             {
@@ -120,7 +129,7 @@ public class Player : SimpleSingleton<Player>
             lastMovedVector = new Vector2(0f, lastVerticalVector);
 
             ///This is for the animation - Joycelyn
-            anim.SetFloat("Walk", Mathf.Abs(lastVerticalVector));
+            //anim.SetFloat("Walk", Mathf.Abs(lastVerticalVector));
             Debug.Log("hori val: " + lastVerticalVector);
 
         }
@@ -153,12 +162,12 @@ public class Player : SimpleSingleton<Player>
     {
         if (isInvincible) return;
 
-        if (HP <= 0)
+        if (CurrentHP <= 0)
         {
             Debug.Log("You're dead");
         }
         
-        HP -= amount;
+        CurrentHP -= amount;
 
         // Activate temporary invincibility
         isInvincible = true;

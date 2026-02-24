@@ -20,7 +20,7 @@ public class UIPlayerHPDisplay : MonoBehaviour
     {
         if (GameManager.Instance.CurrentPlayer != null)
         {
-            hpImage.fillAmount = Player.Instance.HP / Player.Instance.MaxHP;
+            hpImage.fillAmount = Player.Instance.CurrentHP / Player.Instance.MaxHP;
 
             if (hpEffectImage.fillAmount > hpImage.fillAmount)
             {

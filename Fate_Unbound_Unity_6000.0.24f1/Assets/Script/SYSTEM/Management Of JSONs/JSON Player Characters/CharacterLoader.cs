@@ -7,7 +7,10 @@ using System.Collections.Generic;
 public class CharacterClass
 {
     public string className;
+    public string spritePath;
+    public string prefabPath;
     public int MaxHP;
+    public int MaxMP;
     public float moveSpeed;
     public string description;
 
@@ -15,6 +18,9 @@ public class CharacterClass
 
     public int starterWeaponPrimary;
     public int starterWeaponSecondary;
+
+    // [System.NonSerialized] public Sprite loadedSprite;
+    // [System.NonSerialized] public GameObject loadedPrefab;
 }
 
 

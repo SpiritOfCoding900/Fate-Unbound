@@ -74,6 +74,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Dialogues\DialogueManager.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Game\GameTimer.cs" />
+    <Compile Include="Assets\Art\Characters\Enemies\PixelArtStudio\Scripts\AnimationEventsHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Script\DontDie.cs" />
     <Compile Include="Assets\Script\IntroSceneManager.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIHudWorld.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerEXPDisplay.cs" />
+    <Compile Include="Assets\Art\Characters\Enemies\PixelArtStudio\Scripts\DemoPlayer.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerLevelDisplay.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIMainMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />

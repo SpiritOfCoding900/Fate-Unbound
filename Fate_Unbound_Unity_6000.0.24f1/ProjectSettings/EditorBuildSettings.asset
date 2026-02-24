@@ -11,6 +11,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: f610c2c255280254897d5100ce476f2b
+  - enabled: 1
+    path: Assets/Scenes/Game Tutorial/Tutorial Stage 1 - Move Roll Attack.unity
+    guid: 6edddb5a89e574a4ca68e1951cb3968e
+  - enabled: 1
+    path: Assets/Scenes/Game Tutorial/Tutorial Stage 2 - All Stats.unity
+    guid: 90f55a2863016c64d929989cf87f98c3
+  - enabled: 1
+    path: Assets/Scenes/Game Tutorial/Tutorial Stage 3 - How To Get Currency.unity
+    guid: 2def9a24e4c357145a08647d1695cd6f
+  - enabled: 1
+    path: Assets/Scenes/Game Tutorial/Tutorial Stage 4 - How To Get Cards.unity
+    guid: 38b5ff8d7c260be4095ab384d89f9a31
+  - enabled: 1
+    path: Assets/Scenes/Game Tutorial/Tutorial Stage 5 - How To Kill Powerful Foes.unity
+    guid: fe26f3e84c7878e43bf85cdc016411d3
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 7442f8d04fe243a4984af4f13362c3db, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
