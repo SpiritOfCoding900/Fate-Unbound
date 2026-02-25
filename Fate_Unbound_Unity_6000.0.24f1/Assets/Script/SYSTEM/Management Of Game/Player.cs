@@ -13,12 +13,10 @@ public class Player : SimpleSingleton<Player>
     public float MaxMP = 10;
     public float CurrentMP;
 
-    public float MaxSTA = 10;
-    public float CurrentSTA;
-
     public float ATK = 5;
     public float DEF = 5;
 
+    public float dodgeRate = 0;
     public float moveSpeed = 10;
 
     [TextArea(3,5)]
@@ -42,18 +40,54 @@ public class Player : SimpleSingleton<Player>
     public Vector2 lastMovedVector;
 
     ///This is for the animation - Joycelyn
-    //public Animator anim;
+    public Animator anim;
+    public string[] staticDirections = {
+    "Paladin_Static_N",
+    "Paladin_Static_NE",
+    "Paladin_Static_E",
+    "Paladin_Static_SE",
+    "Paladin_Static_S",
+    "Paladin_Static_SW",
+    "Paladin_Static_W",
+    "Paladin_Static_NW" };
+
+    public string[] runDirections = {
+    "Paladin_Run_N",
+    "Paladin_Run_NE",
+    "Paladin_Run_E",
+    "Paladin_Run_SE",
+    "Paladin_Run_S",
+    "Paladin_Run_SW",
+    "Paladin_Run_W",
+    "Paladin_Run_NW" };
+
+    int lastDirection;
 
     /// This is for checking which class is selected  - Joycelyn
     UIPlayerSelection playerSelection;
     Player player;
+
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+
+        float result1 = Vector2.SignedAngle(Vector2.up, Vector2.right);
+        print("R1 " + result1);
+        float result2 = Vector2.SignedAngle(Vector2.up, Vector2.left);
+        print("R1 " + result2);
+        float result3 = Vector2.SignedAngle(Vector2.up, Vector2.down);
+        print("R1 " + result3);
+        //float result4 = Vector2.SignedAngle(Vector2.up, Vector2.right);
+        //print("R1 " + result4);
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         lastMovedVector = new Vector2(1, 0f);
         CurrentHP = MaxHP;
         CurrentMP = MaxMP;
-        CurrentSTA = MaxSTA;
     }
 
     void Update()
@@ -100,44 +134,6 @@ public class Player : SimpleSingleton<Player>
         float moveY = Input.GetAxisRaw("Vertical");
 
         moveDir = new Vector2(moveX, moveY).normalized;
-
-        ///This is for the animation - Joycelyn
-        //anim.SetFloat("Walk", -1);
-
-        if (moveDir.x != 0)
-        {
-            lastHorizontalVector = moveDir.x;
-            lastMovedVector = new Vector2(lastHorizontalVector, 0f);
-
-            ///This is for the animation - Joycelyn
-            //anim.SetFloat("Walk", Mathf.Abs(lastHorizontalVector));
-            var player = gameObject.GetComponent<SpriteRenderer>();
-            if (lastMovedVector.x < 0) 
-            {
-                player.flipX = true;
-            }
-            else
-            {
-                player.flipX = false;
-            }
-            //Debug.Log("hori val: " + lastHorizontalVector);
-        }
-
-        if (moveDir.y != 0)
-        {
-            lastVerticalVector = moveDir.y;
-            lastMovedVector = new Vector2(0f, lastVerticalVector);
-
-            ///This is for the animation - Joycelyn
-            //anim.SetFloat("Walk", Mathf.Abs(lastVerticalVector));
-            Debug.Log("hori val: " + lastVerticalVector);
-
-        }
-
-        if (moveDir.x != 0 && moveDir.y != 0)
-        {
-            lastMovedVector = new Vector2(lastHorizontalVector, lastVerticalVector);
-        }
     }
 
     void PlayerInvincibility()
@@ -153,9 +149,56 @@ public class Player : SimpleSingleton<Player>
         }
     }
 
+    public void SetDirection(Vector2 _direction)
+    {
+        string[] directionArray = null;
+
+        if(_direction.magnitude < 0.01)
+        {
+            directionArray = staticDirections;
+        }
+        else
+        {
+            directionArray = runDirections;
+            lastDirection = DirectionToIndex(_direction);
+        }
+
+        anim.Play(directionArray[lastDirection]);
+    }
+
+    private int DirectionToIndex(Vector2 _direction)
+    {
+        Vector2 norDir = _direction.normalized;
+        float step = 360 / 8;
+        float offset = step / 2;
+        float angle = -Vector2.SignedAngle(Vector2.up, norDir);
+
+        angle += offset;
+        if (angle < 0)
+        {
+            angle += 360;
+        }
+        float stepCount = angle / step;
+        return Mathf.FloorToInt(stepCount);
+    }
+    
     void Move()
     {
-        rb.linearVelocity = new Vector2(moveDir.x * moveSpeed, moveDir.y * moveSpeed);
+        float moveH = moveDir.x * moveSpeed;
+        float moveV = moveDir.y * moveSpeed;
+        rb.linearVelocity = new Vector2(moveH, moveV);
+        Vector2 direction = new Vector2(moveH, moveV);
+        SetDirection(direction);
+    }
+
+    void Roll()
+    {
+
+    }
+
+    void Attack()
+    {
+
     }
 
     public void TakeDamage(int amount)
@@ -175,4 +218,3 @@ public class Player : SimpleSingleton<Player>
         Debug.Log("Player is now invincible.");
     }
 }
-

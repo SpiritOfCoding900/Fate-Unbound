@@ -84,6 +84,7 @@
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIClosePanel.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Weapons\Weapon Controllers\GarlicController.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Game\Player.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Game\PlayerAnimation.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Interface\IDamagable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />

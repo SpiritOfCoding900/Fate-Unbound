@@ -11,7 +11,12 @@ public class CharacterClass
     public string prefabPath;
     public int MaxHP;
     public int MaxMP;
+    public int ATK;
+    public int DEF;
+    public float dodgeRate;
     public float moveSpeed;
+
+    [TextArea(3, 4)]
     public string description;
 
     public int ID;

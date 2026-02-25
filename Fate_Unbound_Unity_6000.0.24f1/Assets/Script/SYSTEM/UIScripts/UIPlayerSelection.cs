@@ -10,6 +10,10 @@ public class CharacterCardUI
     public string NameOfClass = "Put Class Name Here";
     public TMP_Text nameText;
     public TMP_Text hpText;
+    public TMP_Text mpText;
+    public TMP_Text atkText;
+    public TMP_Text defText;
+    public TMP_Text dodgeRateText;
     public TMP_Text speedText;
     public TMP_Text descriptionText;
 }
@@ -27,12 +31,12 @@ public class UIPlayerSelection : MonoBehaviour
     public List<CharacterCardUI> characterCards; // Assign 3 elements in the inspector
 
     ///test
-    public Animator anim;
+    //public Animator anim;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // PauseGame();
+        PauseGame();
     }
 
     public void ResumeGame()
@@ -54,9 +58,13 @@ public class UIPlayerSelection : MonoBehaviour
                 var data = classList.classes[i];
                 var ui = characterCards[i];
 
+                ui.NameOfClass = data.className;
                 ui.nameText.text = data.className;
                 ui.hpText.text = data.MaxHP.ToString();
-                ui.hpText.text = data.MaxMP.ToString();
+                ui.mpText.text = data.MaxMP.ToString();
+                ui.atkText.text = data.ATK.ToString();
+                ui.defText.text = data.DEF.ToString();
+                ui.dodgeRateText.text = data.dodgeRate.ToString();
                 ui.speedText.text = data.moveSpeed.ToString();
                 ui.descriptionText.text = data.description;
             }
