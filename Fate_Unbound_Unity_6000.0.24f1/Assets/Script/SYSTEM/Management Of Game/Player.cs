@@ -4,6 +4,23 @@ using UnityEngine;
 
 public class Player : SimpleSingleton<Player>
 {
+    // =========================
+    // FSM
+    // =========================
+    public enum PlayerState
+    {
+        Idle,
+        Move,
+        Roll,
+        Attack
+    }
+
+    [Header("FSM")]
+    [SerializeField] private PlayerState state = PlayerState.Idle;
+
+    // =========================
+    // Stats
+    // =========================
     [Header("Player's Current Stats: ")]
     public string className;
 
@@ -19,422 +36,397 @@ public class Player : SimpleSingleton<Player>
     public float dodgeRate = 0;
     public float moveSpeed = 10;
 
-    [TextArea(3,5)]
+    [TextArea(3, 5)]
     public string description;
 
     public int ID;
 
+    // =========================
+    // Invincibility
+    // =========================
     [Header("Player's Invincibility: ")]
     private bool isInvincible = false;
-    public float invincibilityDuration = 1.5f; // seconds
+    public float invincibilityDuration = 1.5f;
     private float invincibilityTimer;
 
+    // =========================
+    // Movement
+    // =========================
     private Rigidbody2D rb;
-    [HideInInspector]
-    public float lastHorizontalVector;
-    [HideInInspector]
-    public float lastVerticalVector;
-    [HideInInspector]
-    public Vector2 moveDir;
-    [HideInInspector]
-    public Vector2 lastMovedVector;
 
+    [HideInInspector] public Vector2 moveDir;
+    [HideInInspector] public Vector2 lastMovedVector;
+
+    // =========================
+    // Attack
+    // =========================
     [Header("Player's Attack Settings")]
-    public float attackSpeedRate = 0.15f;   // minimum time between clicks
+    public float attackSpeedRate = 0.15f;   // minimum time between starting attacks
     public float comboResetTime = 0.9f;     // if you wait too long, combo resets
-    public bool lockMovementWhileAttacking = true;
 
     private float timeSinceAttack = 999f;
-    private int currentAttack = 0;
-    private bool isAttacking = false;
-    private bool queuedNextAttack = false;
-    private int queuedAttackNumber = 0;
+    private int currentAttack = 0;          // 0 = none, 1 = Attack1, 2 = Attack2
+    private bool queuedNextAttack = false;  // click buffer during Attack1
 
+    // =========================
+    // Roll
+    // =========================
     [Header("Player's Roll Settings")]
-    public float rollImpulse = 8f;      // tweak this
-    public float rollDuration = 0.25f;  // tweak this
-    public float rollCooldown = 0.35f;  // tweak this
+    public float rollImpulse = 8f;
+    public float rollCooldown = 0.35f;
     public bool invincibleWhileRolling = true;
 
-    private bool isRolling = false;
     private float rollCooldownTimer = 0f;
     private Vector2 rollDir = Vector2.down;
 
-    ///This is for the animation - Joycelyn
+    // =========================
+    // Animation
+    // =========================
+    [Header("Animation")]
     public Animator anim;
 
     public string[] attack1Directions = {
-    "Paladin_Attack1_N",
-    "Paladin_Attack1_NE",
-    "Paladin_Attack1_E",
-    "Paladin_Attack1_SE",
-    "Paladin_Attack1_S",
-    "Paladin_Attack1_SW",
-    "Paladin_Attack1_W",
-    "Paladin_Attack1_NW" };
+        "Paladin_Attack1_N",
+        "Paladin_Attack1_NE",
+        "Paladin_Attack1_E",
+        "Paladin_Attack1_SE",
+        "Paladin_Attack1_S",
+        "Paladin_Attack1_SW",
+        "Paladin_Attack1_W",
+        "Paladin_Attack1_NW"
+    };
 
     public string[] attack2Directions = {
-    "Paladin_Attack2_N",
-    "Paladin_Attack2_NE",
-    "Paladin_Attack2_E",
-    "Paladin_Attack2_SE",
-    "Paladin_Attack2_S",
-    "Paladin_Attack2_SW",
-    "Paladin_Attack2_W",
-    "Paladin_Attack2_NW" };
+        "Paladin_Attack2_N",
+        "Paladin_Attack2_NE",
+        "Paladin_Attack2_E",
+        "Paladin_Attack2_SE",
+        "Paladin_Attack2_S",
+        "Paladin_Attack2_SW",
+        "Paladin_Attack2_W",
+        "Paladin_Attack2_NW"
+    };
 
     public string[] rollDirections = {
-    "Paladin_Roll_N",
-    "Paladin_Roll_NE",
-    "Paladin_Roll_E",
-    "Paladin_Roll_SE",
-    "Paladin_Roll_S",
-    "Paladin_Roll_SW",
-    "Paladin_Roll_W",
-    "Paladin_Roll_NW" };
-    
+        "Paladin_Roll_N",
+        "Paladin_Roll_NE",
+        "Paladin_Roll_E",
+        "Paladin_Roll_SE",
+        "Paladin_Roll_S",
+        "Paladin_Roll_SW",
+        "Paladin_Roll_W",
+        "Paladin_Roll_NW"
+    };
+
     public string[] staticDirections = {
-    "Paladin_Static_N",
-    "Paladin_Static_NE",
-    "Paladin_Static_E",
-    "Paladin_Static_SE",
-    "Paladin_Static_S",
-    "Paladin_Static_SW",
-    "Paladin_Static_W",
-    "Paladin_Static_NW" };
+        "Paladin_Static_N",
+        "Paladin_Static_NE",
+        "Paladin_Static_E",
+        "Paladin_Static_SE",
+        "Paladin_Static_S",
+        "Paladin_Static_SW",
+        "Paladin_Static_W",
+        "Paladin_Static_NW"
+    };
 
     public string[] runDirections = {
-    "Paladin_Run_N",
-    "Paladin_Run_NE",
-    "Paladin_Run_E",
-    "Paladin_Run_SE",
-    "Paladin_Run_S",
-    "Paladin_Run_SW",
-    "Paladin_Run_W",
-    "Paladin_Run_NW" };
+        "Paladin_Run_N",
+        "Paladin_Run_NE",
+        "Paladin_Run_E",
+        "Paladin_Run_SE",
+        "Paladin_Run_S",
+        "Paladin_Run_SW",
+        "Paladin_Run_W",
+        "Paladin_Run_NW"
+    };
 
-    int lastDirection;
+    private int lastDirection = 4; // default South-ish index if you want
 
-    /// This is for checking which class is selected  - Joycelyn
-    UIPlayerSelection playerSelection;
-    Player player;
-
-
+    // =========================
+    // Unity
+    // =========================
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
-        float result1 = Vector2.SignedAngle(Vector2.up, Vector2.right);
-        print("R1 " + result1);
-        float result2 = Vector2.SignedAngle(Vector2.up, Vector2.left);
-        print("R1 " + result2);
-        float result3 = Vector2.SignedAngle(Vector2.up, Vector2.down);
-        print("R1 " + result3);
-        //float result4 = Vector2.SignedAngle(Vector2.up, Vector2.right);
-        //print("R1 " + result4);
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        lastMovedVector = new Vector2(1, 0f);
+        // Default facing (change if you want)
+        lastMovedVector = new Vector2(0f, -1f);
+
         CurrentHP = MaxHP;
         CurrentMP = MaxMP;
+
+        state = PlayerState.Idle;
     }
 
     void Update()
     {
-        Inputmanagement();
-        Roll();
-        Attack();
+        ReadMoveInput();
         PlayerInvincibility();
 
-        if (rollCooldownTimer > 0f)
-            rollCooldownTimer -= Time.deltaTime;
+        // Timers
+        timeSinceAttack += Time.deltaTime;
+        if (rollCooldownTimer > 0f) rollCooldownTimer -= Time.deltaTime;
+
+        // High priority inputs (only if not already doing an exclusive action)
+        HandleRollInput();
+        HandleAttackInput();
+
+        // If we're in an action state, don't auto-switch to Move/Idle
+        if (state == PlayerState.Roll || state == PlayerState.Attack)
+            return;
+
+        // Locomotion state update
+        state = (moveDir.sqrMagnitude > 0.01f) ? PlayerState.Move : PlayerState.Idle;
     }
 
     void FixedUpdate()
     {
-        if (!isRolling && !(lockMovementWhileAttacking && isAttacking))
-            Move();
-    }
-
-
-
-    ///To select the correct class sprites - Jsoycelyn
-    //void ClassChecker()
-    //{
-    //    if (ID == 0)
-    //    {
-    //        anim.SetBool("isBarb", true);
-    //        anim.SetBool("isRog", false);
-    //        anim.SetBool("isAlc", false);
-    //    }
-    //    if (ID == 1)
-    //    {
-
-    //        anim.SetBool("isRog", true);
-    //        anim.SetBool("isBarb", false);
-    //        anim.SetBool("isAlc", false);
-    //    }
-    //    if (ID == 2)
-    //    {
-    //        anim.SetBool("isAlc", true);
-    //        anim.SetBool("isBarb", false);
-    //        anim.SetBool("isRog", false);
-    //    }
-    //}
-
-
-
-    void Inputmanagement()
-    {
-        ///To select the correct class sprites - Jsoycelyn
-        //ClassChecker();
-
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-
-        moveDir = new Vector2(moveX, moveY).normalized;
-    }
-
-    void PlayerInvincibility()
-    {
-        if (isInvincible)
+        switch (state)
         {
-            invincibilityTimer -= Time.deltaTime;
-            if (invincibilityTimer <= 0f)
-            {
-                isInvincible = false;
-                Debug.Log("Player is no longer invincible.");
-            }
+            case PlayerState.Move:
+                DoMove();
+                break;
+
+            case PlayerState.Idle:
+                // Stop drift and play idle facing
+                rb.linearVelocity = Vector2.zero;
+                PlayLocomotionAnim(Vector2.zero);
+                break;
+
+            case PlayerState.Roll:
+            case PlayerState.Attack:
+                // Action coroutines control motion/animation
+                break;
         }
     }
 
-    public void SetDirection(Vector2 _direction)
+    // =========================
+    // Input
+    // =========================
+    void ReadMoveInput()
     {
-        if (isRolling || isAttacking) return;
-        string[] directionArray = null;
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        moveDir = new Vector2(moveX, moveY).normalized;
+    }
 
-        if(_direction.magnitude < 0.01)
+    // =========================
+    // Locomotion
+    // =========================
+    void DoMove()
+    {
+        Vector2 vel = moveDir * moveSpeed;
+        rb.linearVelocity = vel;
+        PlayLocomotionAnim(vel);
+    }
+
+    void PlayLocomotionAnim(Vector2 velocity)
+    {
+        string[] directionArray;
+
+        if (velocity.sqrMagnitude < 0.01f)
         {
             directionArray = staticDirections;
         }
         else
         {
             directionArray = runDirections;
-            lastDirection = DirectionToIndex(_direction);
-            lastMovedVector = _direction.normalized;
+            lastDirection = DirectionToIndex(velocity);
+            lastMovedVector = velocity.normalized;
         }
 
         anim.Play(directionArray[lastDirection]);
     }
 
-    private int DirectionToIndex(Vector2 _direction)
+    // =========================
+    // Roll
+    // =========================
+    void HandleRollInput()
     {
-        Vector2 norDir = _direction.normalized;
-        float step = 360 / 8;
-        float offset = step / 2;
-        float angle = -Vector2.SignedAngle(Vector2.up, norDir);
-
-        angle += offset;
-        if (angle < 0)
-        {
-            angle += 360;
-        }
-        float stepCount = angle / step;
-        return Mathf.FloorToInt(stepCount);
-    }
-    
-    void Move()
-    {
-        float moveH = moveDir.x * moveSpeed;
-        float moveV = moveDir.y * moveSpeed;
-        rb.linearVelocity = new Vector2(moveH, moveV);
-        Vector2 direction = new Vector2(moveH, moveV);
-        SetDirection(direction);
-    }
-
-    float GetClipLength(string clipName)
-    {
-        foreach (var clip in anim.runtimeAnimatorController.animationClips)
-            if (clip.name == clipName) return clip.length;
-
-        return 0.2f; // fallback
-    }
-
-    void Roll()
-    {
-        if (isRolling) return;
+        if (state == PlayerState.Roll) return;
+        if (state == PlayerState.Attack) return; // no roll during attack
         if (rollCooldownTimer > 0f) return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Choose roll direction:
-            // If player is pressing a direction, roll that way.
-            // Otherwise roll toward last moved direction.
-            Vector2 inputDir = moveDir;
-            rollDir = (inputDir.sqrMagnitude > 0.01f) ? inputDir.normalized : lastMovedVector.normalized;
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
 
-            // Safety fallback (in case lastMovedVector is zero somehow)
-            if (rollDir.sqrMagnitude < 0.01f)
-                rollDir = Vector2.down;
+        // Roll direction: input direction if any, else last facing
+        rollDir = (moveDir.sqrMagnitude > 0.01f) ? moveDir.normalized : lastMovedVector.normalized;
+        if (rollDir.sqrMagnitude < 0.01f) rollDir = Vector2.down;
 
-            StartCoroutine(RollRoutine());
-        }
+        StartCoroutine(RollRoutineFSM());
     }
 
-    IEnumerator RollRoutine()
+    IEnumerator RollRoutineFSM()
     {
-        isRolling = true;
+        state = PlayerState.Roll;
         rollCooldownTimer = rollCooldown;
 
-        // Cache + update lastMovedVector so your facing is correct after roll
+        // Face direction
         lastMovedVector = rollDir;
         lastDirection = DirectionToIndex(rollDir);
 
-        // Play roll animation (8-direction)
-        anim.Play(rollDirections[lastDirection]);
+        // Animation
+        string rollClip = rollDirections[lastDirection];
+        anim.Play(rollClip);
 
-        // Optional: invincible while rolling
-        bool prevInv = isInvincible;
-        float prevInvTimer = invincibilityTimer;
-
+        // Optional i-frames during roll for the clip duration
         if (invincibleWhileRolling)
         {
             isInvincible = true;
-            invincibilityTimer = rollDuration; // will tick down in PlayerInvincibility
+            invincibilityTimer = GetClipLength(rollClip);
         }
 
-        // Clear current velocity so impulse feels crisp
+        // Movement via impulse
         rb.linearVelocity = Vector2.zero;
-
-        // AddForce impulse (instant push)
         rb.AddForce(rollDir * rollImpulse, ForceMode2D.Impulse);
 
-        // Wait for the ACTUAL roll animation to finish
-        float clipLen = GetClipLength(rollDirections[lastDirection]);
-
-        // If animator speed isn't 1, account for it
-        float animTime = clipLen / Mathf.Max(0.0001f, anim.speed);
-
+        // Wait for animation end
+        float animTime = GetClipLength(rollClip) / Mathf.Max(0.0001f, anim.speed);
         yield return new WaitForSeconds(animTime);
 
-        // Stop momentum at the end (prevents sliding forever)
         rb.linearVelocity = Vector2.zero;
 
-        // Restore invincibility state if you don't want roll to overwrite other i-frames
-        if (!invincibleWhileRolling)
-        {
-            // do nothing
-        }
-        else
-        {
-            // If you prefer: keep whatever invincibility system decides based on timer
-            // Leaving it alone is fine because PlayerInvincibility() handles timer.
-        }
-
-        isRolling = false;
+        // Return to locomotion
+        state = (moveDir.sqrMagnitude > 0.01f) ? PlayerState.Move : PlayerState.Idle;
     }
 
-    void Attack()
+    // =========================
+    // Attack (Attack1 -> Attack2, queued after Attack1 finishes)
+    // =========================
+    void HandleAttackInput()
     {
-        timeSinceAttack += Time.deltaTime;
+        if (state == PlayerState.Roll) return;
 
-        if (isRolling) return;
-
-        // If we waited too long, reset combo
+        // Reset combo if waited too long
         if (timeSinceAttack > comboResetTime)
             currentAttack = 0;
 
-        // Click?
         if (!Input.GetMouseButtonDown(0)) return;
 
-        // If currently attacking, queue the next hit instead of playing immediately
-        if (isAttacking)
+        // If already attacking, just queue the next hit
+        if (state == PlayerState.Attack)
         {
-            // Only queue if within combo window (optional)
-            if (timeSinceAttack <= comboResetTime)
-            {
-                queuedNextAttack = true;
-                queuedAttackNumber = Mathf.Clamp(currentAttack + 1, 1, 2); // next is 2 if current is 1
-                if (queuedAttackNumber > 2) queuedAttackNumber = 1;
-            }
+            queuedNextAttack = true;
             return;
         }
 
-        // Enforce minimum time between starting attacks
+        // Minimum time between starting attacks
         if (timeSinceAttack < attackSpeedRate) return;
 
-        // Start the next attack
-        currentAttack++;
-        if (currentAttack > 2) currentAttack = 1;
+        // Start at Attack1
+        currentAttack = 1;
+        queuedNextAttack = false;
 
-        StartCoroutine(AttackRoutine(currentAttack));
+        StartCoroutine(AttackRoutineFSM(currentAttack));
         timeSinceAttack = 0f;
     }
 
-    IEnumerator AttackRoutine(int attackNumber)
+    IEnumerator AttackRoutineFSM(int attackNumber)
     {
-        isAttacking = true;
-        rb.linearVelocity = Vector2.zero; // stop immediately
+        state = PlayerState.Attack;
 
-        // Choose facing direction when attack starts
+        // Freeze immediately
+        rb.linearVelocity = Vector2.zero;
+
+        // Determine facing when attack starts
         Vector2 facing = (moveDir.sqrMagnitude > 0.01f) ? moveDir : lastMovedVector;
         if (facing.sqrMagnitude < 0.01f) facing = Vector2.down;
 
         lastMovedVector = facing.normalized;
         lastDirection = DirectionToIndex(lastMovedVector);
 
-        // Pick clip
+        // Pick and play the clip
         string clipName = (attackNumber == 1)
             ? attack1Directions[lastDirection]
             : attack2Directions[lastDirection];
 
-        // Play clip
         anim.Play(clipName);
 
-        // Wait for clip to finish
-        float clipLen = GetClipLength(clipName);
-        float animTime = clipLen / Mathf.Max(0.0001f, anim.speed);
-        
+        // Wait while keeping player frozen
+        float animTime = GetClipLength(clipName) / Mathf.Max(0.0001f, anim.speed);
         float t = 0f;
         while (t < animTime)
         {
-            rb.linearVelocity = Vector2.zero; // ✅ keep frozen
+            rb.linearVelocity = Vector2.zero;
             t += Time.deltaTime;
             yield return null;
         }
 
-        // If player clicked during the attack, chain to next attack NOW
-        if (queuedNextAttack)
+        // Chain only after Attack1 finishes
+        if (attackNumber == 1 && queuedNextAttack)
         {
             queuedNextAttack = false;
-            currentAttack = (attackNumber == 1) ? 2 : 1;
             timeSinceAttack = 0f;
 
-            yield return StartCoroutine(AttackRoutine(currentAttack));
+            currentAttack = 2;
+            yield return StartCoroutine(AttackRoutineFSM(2));
             yield break;
         }
 
         // Done attacking
-        isAttacking = false;
+        currentAttack = 0;
+        state = (moveDir.sqrMagnitude > 0.01f) ? PlayerState.Move : PlayerState.Idle;
+    }
+
+    // =========================
+    // Invincibility
+    // =========================
+    void PlayerInvincibility()
+    {
+        if (!isInvincible) return;
+
+        invincibilityTimer -= Time.deltaTime;
+        if (invincibilityTimer <= 0f)
+        {
+            isInvincible = false;
+        }
     }
 
     public void TakeDamage(int amount)
     {
         if (isInvincible) return;
 
+        CurrentHP -= amount;
         if (CurrentHP <= 0)
         {
+            CurrentHP = 0;
             Debug.Log("You're dead");
         }
-        
-        CurrentHP -= amount;
 
-        // Activate temporary invincibility
         isInvincible = true;
         invincibilityTimer = invincibilityDuration;
-        Debug.Log("Player is now invincible.");
+    }
+
+    // =========================
+    // Helpers
+    // =========================
+    float GetClipLength(string clipName)
+    {
+        if (anim == null || anim.runtimeAnimatorController == null) return 0.2f;
+
+        foreach (var clip in anim.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName) return clip.length;
+        }
+        return 0.2f;
+    }
+
+    private int DirectionToIndex(Vector2 _direction)
+    {
+        Vector2 norDir = _direction.normalized;
+        float step = 360f / 8f;
+        float offset = step / 2f;
+
+        float angle = -Vector2.SignedAngle(Vector2.up, norDir);
+        angle += offset;
+
+        if (angle < 0) angle += 360f;
+
+        float stepCount = angle / step;
+        return Mathf.FloorToInt(stepCount) % 8;
     }
 }
