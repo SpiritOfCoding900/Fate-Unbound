@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,8 +39,60 @@ public class Player : SimpleSingleton<Player>
     [HideInInspector]
     public Vector2 lastMovedVector;
 
+    [Header("Player's Attack Settings")]
+    public float attackSpeedRate = 0.15f;   // minimum time between clicks
+    public float comboResetTime = 0.9f;     // if you wait too long, combo resets
+    public bool lockMovementWhileAttacking = true;
+
+    private float timeSinceAttack = 999f;
+    private int currentAttack = 0;
+    private bool isAttacking = false;
+    private bool queuedNextAttack = false;
+    private int queuedAttackNumber = 0;
+
+    [Header("Player's Roll Settings")]
+    public float rollImpulse = 8f;      // tweak this
+    public float rollDuration = 0.25f;  // tweak this
+    public float rollCooldown = 0.35f;  // tweak this
+    public bool invincibleWhileRolling = true;
+
+    private bool isRolling = false;
+    private float rollCooldownTimer = 0f;
+    private Vector2 rollDir = Vector2.down;
+
     ///This is for the animation - Joycelyn
     public Animator anim;
+
+    public string[] attack1Directions = {
+    "Paladin_Attack1_N",
+    "Paladin_Attack1_NE",
+    "Paladin_Attack1_E",
+    "Paladin_Attack1_SE",
+    "Paladin_Attack1_S",
+    "Paladin_Attack1_SW",
+    "Paladin_Attack1_W",
+    "Paladin_Attack1_NW" };
+
+    public string[] attack2Directions = {
+    "Paladin_Attack2_N",
+    "Paladin_Attack2_NE",
+    "Paladin_Attack2_E",
+    "Paladin_Attack2_SE",
+    "Paladin_Attack2_S",
+    "Paladin_Attack2_SW",
+    "Paladin_Attack2_W",
+    "Paladin_Attack2_NW" };
+
+    public string[] rollDirections = {
+    "Paladin_Roll_N",
+    "Paladin_Roll_NE",
+    "Paladin_Roll_E",
+    "Paladin_Roll_SE",
+    "Paladin_Roll_S",
+    "Paladin_Roll_SW",
+    "Paladin_Roll_W",
+    "Paladin_Roll_NW" };
+    
     public string[] staticDirections = {
     "Paladin_Static_N",
     "Paladin_Static_NE",
@@ -93,13 +145,21 @@ public class Player : SimpleSingleton<Player>
     void Update()
     {
         Inputmanagement();
+        Roll();
+        Attack();
         PlayerInvincibility();
+
+        if (rollCooldownTimer > 0f)
+            rollCooldownTimer -= Time.deltaTime;
     }
 
     void FixedUpdate()
     {
-        Move();
+        if (!isRolling && !(lockMovementWhileAttacking && isAttacking))
+            Move();
     }
+
+
 
     ///To select the correct class sprites - Jsoycelyn
     //void ClassChecker()
@@ -124,6 +184,8 @@ public class Player : SimpleSingleton<Player>
     //        anim.SetBool("isRog", false);
     //    }
     //}
+
+
 
     void Inputmanagement()
     {
@@ -151,6 +213,7 @@ public class Player : SimpleSingleton<Player>
 
     public void SetDirection(Vector2 _direction)
     {
+        if (isRolling || isAttacking) return;
         string[] directionArray = null;
 
         if(_direction.magnitude < 0.01)
@@ -161,6 +224,7 @@ public class Player : SimpleSingleton<Player>
         {
             directionArray = runDirections;
             lastDirection = DirectionToIndex(_direction);
+            lastMovedVector = _direction.normalized;
         }
 
         anim.Play(directionArray[lastDirection]);
@@ -191,14 +255,170 @@ public class Player : SimpleSingleton<Player>
         SetDirection(direction);
     }
 
+    float GetClipLength(string clipName)
+    {
+        foreach (var clip in anim.runtimeAnimatorController.animationClips)
+            if (clip.name == clipName) return clip.length;
+
+        return 0.2f; // fallback
+    }
+
     void Roll()
     {
+        if (isRolling) return;
+        if (rollCooldownTimer > 0f) return;
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Choose roll direction:
+            // If player is pressing a direction, roll that way.
+            // Otherwise roll toward last moved direction.
+            Vector2 inputDir = moveDir;
+            rollDir = (inputDir.sqrMagnitude > 0.01f) ? inputDir.normalized : lastMovedVector.normalized;
+
+            // Safety fallback (in case lastMovedVector is zero somehow)
+            if (rollDir.sqrMagnitude < 0.01f)
+                rollDir = Vector2.down;
+
+            StartCoroutine(RollRoutine());
+        }
+    }
+
+    IEnumerator RollRoutine()
+    {
+        isRolling = true;
+        rollCooldownTimer = rollCooldown;
+
+        // Cache + update lastMovedVector so your facing is correct after roll
+        lastMovedVector = rollDir;
+        lastDirection = DirectionToIndex(rollDir);
+
+        // Play roll animation (8-direction)
+        anim.Play(rollDirections[lastDirection]);
+
+        // Optional: invincible while rolling
+        bool prevInv = isInvincible;
+        float prevInvTimer = invincibilityTimer;
+
+        if (invincibleWhileRolling)
+        {
+            isInvincible = true;
+            invincibilityTimer = rollDuration; // will tick down in PlayerInvincibility
+        }
+
+        // Clear current velocity so impulse feels crisp
+        rb.linearVelocity = Vector2.zero;
+
+        // AddForce impulse (instant push)
+        rb.AddForce(rollDir * rollImpulse, ForceMode2D.Impulse);
+
+        // Wait for the ACTUAL roll animation to finish
+        float clipLen = GetClipLength(rollDirections[lastDirection]);
+
+        // If animator speed isn't 1, account for it
+        float animTime = clipLen / Mathf.Max(0.0001f, anim.speed);
+
+        yield return new WaitForSeconds(animTime);
+
+        // Stop momentum at the end (prevents sliding forever)
+        rb.linearVelocity = Vector2.zero;
+
+        // Restore invincibility state if you don't want roll to overwrite other i-frames
+        if (!invincibleWhileRolling)
+        {
+            // do nothing
+        }
+        else
+        {
+            // If you prefer: keep whatever invincibility system decides based on timer
+            // Leaving it alone is fine because PlayerInvincibility() handles timer.
+        }
+
+        isRolling = false;
     }
 
     void Attack()
     {
+        timeSinceAttack += Time.deltaTime;
 
+        if (isRolling) return;
+
+        // If we waited too long, reset combo
+        if (timeSinceAttack > comboResetTime)
+            currentAttack = 0;
+
+        // Click?
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        // If currently attacking, queue the next hit instead of playing immediately
+        if (isAttacking)
+        {
+            // Only queue if within combo window (optional)
+            if (timeSinceAttack <= comboResetTime)
+            {
+                queuedNextAttack = true;
+                queuedAttackNumber = Mathf.Clamp(currentAttack + 1, 1, 2); // next is 2 if current is 1
+                if (queuedAttackNumber > 2) queuedAttackNumber = 1;
+            }
+            return;
+        }
+
+        // Enforce minimum time between starting attacks
+        if (timeSinceAttack < attackSpeedRate) return;
+
+        // Start the next attack
+        currentAttack++;
+        if (currentAttack > 2) currentAttack = 1;
+
+        StartCoroutine(AttackRoutine(currentAttack));
+        timeSinceAttack = 0f;
+    }
+
+    IEnumerator AttackRoutine(int attackNumber)
+    {
+        isAttacking = true;
+        rb.linearVelocity = Vector2.zero; // stop immediately
+
+        // Choose facing direction when attack starts
+        Vector2 facing = (moveDir.sqrMagnitude > 0.01f) ? moveDir : lastMovedVector;
+        if (facing.sqrMagnitude < 0.01f) facing = Vector2.down;
+
+        lastMovedVector = facing.normalized;
+        lastDirection = DirectionToIndex(lastMovedVector);
+
+        // Pick clip
+        string clipName = (attackNumber == 1)
+            ? attack1Directions[lastDirection]
+            : attack2Directions[lastDirection];
+
+        // Play clip
+        anim.Play(clipName);
+
+        // Wait for clip to finish
+        float clipLen = GetClipLength(clipName);
+        float animTime = clipLen / Mathf.Max(0.0001f, anim.speed);
+        
+        float t = 0f;
+        while (t < animTime)
+        {
+            rb.linearVelocity = Vector2.zero; // ✅ keep frozen
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        // If player clicked during the attack, chain to next attack NOW
+        if (queuedNextAttack)
+        {
+            queuedNextAttack = false;
+            currentAttack = (attackNumber == 1) ? 2 : 1;
+            timeSinceAttack = 0f;
+
+            yield return StartCoroutine(AttackRoutine(currentAttack));
+            yield break;
+        }
+
+        // Done attacking
+        isAttacking = false;
     }
 
     public void TakeDamage(int amount)
