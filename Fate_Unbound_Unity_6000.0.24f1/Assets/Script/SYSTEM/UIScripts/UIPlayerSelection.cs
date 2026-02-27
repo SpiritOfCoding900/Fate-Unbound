@@ -94,49 +94,30 @@ public class UIPlayerSelection : MonoBehaviour
 
     private void ChooseClass(int index)
     {
-        // Assign the stats based on respective class
         var characterData = CharacterLoader.Instance.myClassList.classes[index];
 
-        ///Test
-        // Update Player's New class
-        //Player.Instance.className = characterData.className;
-        //Player.Instance.MaxHP = characterData.MaxHP;
-        //Player.Instance.MaxMP = characterData.MaxMP;
-        //Player.Instance.CurrentHP = Player.Instance.MaxHP;
-        //Player.Instance.CurrentMP = Player.Instance.MaxMP;
-        //Player.Instance.ATK = characterData.ATK;
-        //Player.Instance.DEF = characterData.DEF;
-        //Player.Instance.dodgeRate = characterData.dodgeRate;
-        //Player.Instance.ATK = characterData.ATK;
-        //Player.Instance.moveSpeed = characterData.moveSpeed;
-        //Player.Instance.description = characterData.description;
-        //Player.Instance.ID = characterData.ID;
+        // Store the chosen class into GameManager (safe even if player not spawned yet)
+        GameManager.PlayerClassStats stats = new GameManager.PlayerClassStats
+        {
+            className = characterData.className,
+            MaxHP = characterData.MaxHP,
+            MaxMP = characterData.MaxMP,
+            ATK = characterData.ATK,
+            DEF = characterData.DEF,
+            dodgeRate = characterData.dodgeRate,
+            moveSpeed = characterData.moveSpeed,
+            description = characterData.description,
+            ID = characterData.ID
+        };
 
-        GM.CurrentPlayer.className = characterData.className;
-        GM.CurrentPlayer.MaxHP = characterData.MaxHP;
-        GM.CurrentPlayer.MaxMP = characterData.MaxMP;
-        GM.CurrentPlayer.CurrentHP = Player.Instance.MaxHP;
-        GM.CurrentPlayer.CurrentMP = Player.Instance.MaxMP;
-        GM.CurrentPlayer.ATK = characterData.ATK;
-        GM.CurrentPlayer.DEF = characterData.DEF;
-        GM.CurrentPlayer.dodgeRate = characterData.dodgeRate;
-        GM.CurrentPlayer.ATK = characterData.ATK;
-        GM.CurrentPlayer.moveSpeed = characterData.moveSpeed;
-        GM.CurrentPlayer.description = characterData.description;
-        GM.CurrentPlayer.ID = characterData.ID;
-
-
+        GM.SetChosenClass(stats);
 
         Time.timeScale = 1f;
         UIManager.Instance.CloseAll();
         AudioManager.Instance.SFXSound(SoundID.Confirm);
 
-        if (putSceneName != null)
-        {
+        if (!string.IsNullOrEmpty(putSceneName))
             SceneManager.LoadScene(putSceneName);
-        }
-
-        // Do something with index, like pass it to GameManager or store selected class
     }
 
 }
