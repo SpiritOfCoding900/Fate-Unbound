@@ -1,0 +1,324 @@
+fileFormatVersion: 2
+guid: de7432fba78eb14428c3dcfea566d47a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3874477236826348911
+    second: Fate Unbound_Controls_0
+  - first:
+      213: -5491148579240826345
+    second: Fate Unbound_Controls_1
+  - first:
+      213: -7796458321732516523
+    second: Fate Unbound_Controls_2
+  - first:
+      213: 5188742254731835803
+    second: Fate Unbound_Controls_3
+  - first:
+      213: 3047186209417873150
+    second: Fate Unbound_Controls_4
+  - first:
+      213: -4196088225089545374
+    second: Fate Unbound_Controls_5
+  - first:
+      213: 5018046919348737805
+    second: Fate Unbound_Controls_6
+  - first:
+      213: 1400567277662896394
+    second: Fate Unbound_Controls_7
+  - first:
+      213: -4436715566464901732
+    second: Fate Unbound_Controls_8
+  - first:
+      213: 7230567665363172744
+    second: Fate Unbound_Controls_9
+  - first:
+      213: -1604664293892223334
+    second: Fate Unbound_Controls_10
+  - first:
+      213: 7081294492884580141
+    second: Fate Unbound_Controls_11
+  - first:
+      213: 5482788558398909222
+    second: Fate Unbound_Controls_12
+  - first:
+      213: 1676010506182863039
+    second: Fate Unbound_Controls_13
+  - first:
+      213: 7648019749821187799
+    second: Fate Unbound_Controls_14
+  - first:
+      213: 347996578792754635
+    second: Fate Unbound_Controls_15
+  - first:
+      213: 1148286689273591410
+    second: Fate Unbound_Controls_16
+  - first:
+      213: 6363820814738577977
+    second: Fate Unbound_Controls_17
+  - first:
+      213: -4823343476745957134
+    second: Fate Unbound_Controls_18
+  - first:
+      213: 3305078134609219965
+    second: Fate Unbound_Controls_19
+  - first:
+      213: 2632348610006477652
+    second: Fate Unbound_Controls_20
+  - first:
+      213: -2315561439993454565
+    second: Fate Unbound_Controls_21
+  - first:
+      213: 582819598452161060
+    second: Fate Unbound_Controls_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fate Unbound_Controls_4
+      rect:
+        serializedVersion: 2
+        x: 2803
+        y: 369
+        width: 445
+        height: 667
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef642d876b7c94a20800000000000000
+      internalID: 3047186209417873150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fate Unbound_Controls_5
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 369
+        width: 1089
+        height: 664
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26b9659bdff74c5c0800000000000000
+      internalID: -4196088225089545374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fate Unbound_Controls_8
+      rect:
+        serializedVersion: 2
+        x: 1343
+        y: 369
+        width: 1162
+        height: 314
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9dd963f2be9d62c0800000000000000
+      internalID: -4436715566464901732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fate Unbound_Controls_9
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 181
+        width: 377
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88db5628bf2285460800000000000000
+      internalID: 7230567665363172744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fate Unbound_Controls_13
+      rect:
+        serializedVersion: 2
+        x: 1759
+        y: 181
+        width: 330
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb82adceca2624710800000000000000
+      internalID: 1676010506182863039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fate Unbound_Controls_17
+      rect:
+        serializedVersion: 2
+        x: 2771
+        y: 181
+        width: 510
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93adab46055d05850800000000000000
+      internalID: 6363820814738577977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7c4b8a64be228684aa54bae6d4f398ad
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Fate Unbound_Controls_13: 1676010506182863039
+      Fate Unbound_Controls_17: 6363820814738577977
+      Fate Unbound_Controls_4: 3047186209417873150
+      Fate Unbound_Controls_5: -4196088225089545374
+      Fate Unbound_Controls_8: -4436715566464901732
+      Fate Unbound_Controls_9: 7230567665363172744
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

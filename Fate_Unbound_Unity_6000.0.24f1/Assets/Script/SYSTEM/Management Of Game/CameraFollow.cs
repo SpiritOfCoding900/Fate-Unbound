@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        // findPlayerTarget(GameManager.Instance.CurrentPlayer.transform);
+        findPlayerTarget(GameManager.Instance.CurrentPlayer.transform);
         offset = transform.position - target.position;
     }
 

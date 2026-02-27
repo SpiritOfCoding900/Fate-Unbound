@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : SimpleSingleton<GameManager>
 {
@@ -10,7 +12,8 @@ public class GameManager : SimpleSingleton<GameManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        UIManager.Instance.Open(GameUIID.Logo);
+        if (SceneManager.GetActiveScene().name == "MainScene")
+            UIManager.Instance.Open(GameUIID.Logo);
     }
 
     // Update is called once per frame

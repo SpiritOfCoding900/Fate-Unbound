@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 public class CharacterCardUI
@@ -27,11 +29,26 @@ public class WeaponSet
 
 public class UIPlayerSelection : MonoBehaviour
 {
+    [Header("Find GameManager")]
+    public GameManager GM;
+
     [Header("Character Select")]
     public List<CharacterCardUI> characterCards; // Assign 3 elements in the inspector
 
+    [Header("Go To Scene")]
+    public string putSceneName = "Tutorial Stage 1 - Move Roll Attack";
+
     ///test
     //public Animator anim;
+
+    private void Awake()
+    {
+        GM = FindFirstObjectByType<GameManager>(); // Unity 2022+
+        // GM = FindObjectOfType<GameManager>();   // older Unity
+
+        if (GM == null)
+            Debug.LogError("No GameManager found in the scene!", this);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,7 +64,7 @@ public class UIPlayerSelection : MonoBehaviour
 
     public void PauseGame()
     {
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
 
         var classList = CharacterLoader.Instance.myClassList;
 
@@ -71,9 +88,9 @@ public class UIPlayerSelection : MonoBehaviour
         }
     }
 
-    public void ChosenWarriorClass() => ChooseClass(0);
+    public void ChosenBerserkerClass() => ChooseClass(0);
     public void ChosenRangerClass() => ChooseClass(1);
-    public void ChosenMageClass() => ChooseClass(2);
+    public void ChosenPaladinClass() => ChooseClass(2);
 
     private void ChooseClass(int index)
     {
@@ -81,27 +98,43 @@ public class UIPlayerSelection : MonoBehaviour
         var characterData = CharacterLoader.Instance.myClassList.classes[index];
 
         ///Test
-        Player.Instance.ID = characterData.ID;
         // Update Player's New class
-        Player.Instance.MaxHP = characterData.MaxHP;
-        Player.Instance.MaxHP = characterData.MaxMP;
-        Player.Instance.CurrentHP = Player.Instance.MaxHP;
-        Player.Instance.moveSpeed = characterData.moveSpeed;
+        //Player.Instance.className = characterData.className;
+        //Player.Instance.MaxHP = characterData.MaxHP;
+        //Player.Instance.MaxMP = characterData.MaxMP;
+        //Player.Instance.CurrentHP = Player.Instance.MaxHP;
+        //Player.Instance.CurrentMP = Player.Instance.MaxMP;
+        //Player.Instance.ATK = characterData.ATK;
+        //Player.Instance.DEF = characterData.DEF;
+        //Player.Instance.dodgeRate = characterData.dodgeRate;
+        //Player.Instance.ATK = characterData.ATK;
+        //Player.Instance.moveSpeed = characterData.moveSpeed;
+        //Player.Instance.description = characterData.description;
+        //Player.Instance.ID = characterData.ID;
+
+        GM.CurrentPlayer.className = characterData.className;
+        GM.CurrentPlayer.MaxHP = characterData.MaxHP;
+        GM.CurrentPlayer.MaxMP = characterData.MaxMP;
+        GM.CurrentPlayer.CurrentHP = Player.Instance.MaxHP;
+        GM.CurrentPlayer.CurrentMP = Player.Instance.MaxMP;
+        GM.CurrentPlayer.ATK = characterData.ATK;
+        GM.CurrentPlayer.DEF = characterData.DEF;
+        GM.CurrentPlayer.dodgeRate = characterData.dodgeRate;
+        GM.CurrentPlayer.ATK = characterData.ATK;
+        GM.CurrentPlayer.moveSpeed = characterData.moveSpeed;
+        GM.CurrentPlayer.description = characterData.description;
+        GM.CurrentPlayer.ID = characterData.ID;
+
+
 
         Time.timeScale = 1f;
-
-        WeaponController weaponCtrl = Player.Instance.GetComponentInChildren<WeaponController>();
-        if (weaponCtrl != null)
-        {
-            var primaryWeaponData = WeaponLoader.Instance.myWeaponList.weapons[characterData.starterWeaponPrimary];
-            var secondaryWeaponData = WeaponLoader.Instance.myWeaponList.weapons[characterData.starterWeaponSecondary];
-            weaponCtrl.AddWeapon(primaryWeaponData);
-            weaponCtrl.AddWeapon(secondaryWeaponData);
-        }
-        else
-            Debug.LogWarning("WeaponController not found on Player!");
-
         UIManager.Instance.CloseAll();
+        AudioManager.Instance.SFXSound(SoundID.Confirm);
+
+        if (putSceneName != null)
+        {
+            SceneManager.LoadScene(putSceneName);
+        }
 
         // Do something with index, like pass it to GameManager or store selected class
     }

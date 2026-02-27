@@ -2802,7 +2802,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2743148178518966097}
         m_TargetAssemblyTypeName: UIPlayerSelection, Assembly-CSharp
-        m_MethodName: ChosenWarriorClass
+        m_MethodName: ChosenBerserkerClass
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5334,6 +5334,7 @@ MonoBehaviour:
     dodgeRateText: {fileID: 8421672226798933079}
     speedText: {fileID: 2203593638657856235}
     descriptionText: {fileID: 289435934043164483}
+  putSceneName: Tutorial Stage 1 - Move Roll Attack
 --- !u!114 &3088920351989332594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6244,7 +6245,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2743148178518966097}
         m_TargetAssemblyTypeName: UIPlayerSelection, Assembly-CSharp
-        m_MethodName: ChosenWarriorClass
+        m_MethodName: ChosenPaladinClass
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6876,7 +6877,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2743148178518966097}
         m_TargetAssemblyTypeName: UIPlayerSelection, Assembly-CSharp
-        m_MethodName: ChosenWarriorClass
+        m_MethodName: ChosenRangerClass
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
