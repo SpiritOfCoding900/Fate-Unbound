@@ -9,6 +9,7 @@ public class CharacterClass
     public string className;
     public string spritePath;
     public string prefabPath;
+
     public int MaxHP;
     public int MaxMP;
     public int ATK;
@@ -18,14 +19,13 @@ public class CharacterClass
 
     [TextArea(3, 4)]
     public string description;
-
     public int ID;
 
     public int starterWeaponPrimary;
     public int starterWeaponSecondary;
 
-    // [System.NonSerialized] public Sprite loadedSprite;
-    // [System.NonSerialized] public GameObject loadedPrefab;
+    [System.NonSerialized] public Sprite loadedCharSprite;
+    [System.NonSerialized] public GameObject loadedCharPrefab;
 }
 
 

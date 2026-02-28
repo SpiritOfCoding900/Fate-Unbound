@@ -76,8 +76,16 @@ public class Player : SimpleSingleton<Player>
     public float rollCooldown = 0.35f;
     public bool invincibleWhileRolling = true;
 
+    [Header("Roll Over Objects (IRollable)")]
+    [SerializeField] private Collider2D playerSolidCollider; // your main NON-trigger collider
+    private readonly HashSet<Collider2D> ignoredThisRoll = new HashSet<Collider2D>();
+
     private float rollCooldownTimer = 0f;
     private Vector2 rollDir = Vector2.down;
+
+
+    private readonly List<IRollable> rollablesInRange = new List<IRollable>();
+    private readonly List<Collider2D> rollableCollidersInRange = new List<Collider2D>();
 
     // =========================
     // Animation
@@ -95,7 +103,6 @@ public class Player : SimpleSingleton<Player>
         "Paladin_Attack1_W",
         "Paladin_Attack1_NW"
     };
-
     public string[] attack2Directions = {
         "Paladin_Attack2_N",
         "Paladin_Attack2_NE",
@@ -106,7 +113,6 @@ public class Player : SimpleSingleton<Player>
         "Paladin_Attack2_W",
         "Paladin_Attack2_NW"
     };
-
     public string[] rollDirections = {
         "Paladin_Roll_N",
         "Paladin_Roll_NE",
@@ -117,7 +123,6 @@ public class Player : SimpleSingleton<Player>
         "Paladin_Roll_W",
         "Paladin_Roll_NW"
     };
-
     public string[] staticDirections = {
         "Paladin_Static_N",
         "Paladin_Static_NE",
@@ -128,7 +133,6 @@ public class Player : SimpleSingleton<Player>
         "Paladin_Static_W",
         "Paladin_Static_NW"
     };
-
     public string[] runDirections = {
         "Paladin_Run_N",
         "Paladin_Run_NE",
@@ -139,7 +143,6 @@ public class Player : SimpleSingleton<Player>
         "Paladin_Run_W",
         "Paladin_Run_NW"
     };
-
     private int lastDirection = 4; // default South-ish index if you want
 
     // =========================
@@ -149,6 +152,12 @@ public class Player : SimpleSingleton<Player>
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        if (playerSolidCollider == null)
+            playerSolidCollider = GetComponent<Collider2D>();
+
+        if (playerSolidCollider == null)          Debug.LogError("Player: No Collider2D found on the Player root.");
+        else if (playerSolidCollider.isTrigger)   Debug.LogError("Player: playerSolidCollider is a trigger. It should be a NON-trigger collider.");
     }
 
     void Start()
@@ -160,6 +169,11 @@ public class Player : SimpleSingleton<Player>
         CurrentMP = MaxMP;
 
         state = PlayerState.Idle;
+    }
+
+    private void OnDisable()
+    {
+        EndRollIgnore();
     }
 
     void Update()
@@ -265,33 +279,99 @@ public class Player : SimpleSingleton<Player>
         state = PlayerState.Roll;
         rollCooldownTimer = rollCooldown;
 
-        // Face direction
         lastMovedVector = rollDir;
         lastDirection = DirectionToIndex(rollDir);
 
-        // Animation
         string rollClip = rollDirections[lastDirection];
         anim.Play(rollClip);
 
-        // Optional i-frames during roll for the clip duration
         if (invincibleWhileRolling)
         {
             isInvincible = true;
             invincibilityTimer = GetClipLength(rollClip);
         }
 
-        // Movement via impulse
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(rollDir * rollImpulse, ForceMode2D.Impulse);
-
-        // Wait for animation end
-        float animTime = GetClipLength(rollClip) / Mathf.Max(0.0001f, anim.speed);
-        yield return new WaitForSeconds(animTime);
-
         rb.linearVelocity = Vector2.zero;
 
-        // Return to locomotion
+        BeginRollIgnore();
+
+        try
+        {
+            rb.AddForce(rollDir * rollImpulse, ForceMode2D.Impulse);
+
+            float animTime = GetClipLength(rollClip) / Mathf.Max(0.0001f, anim.speed);
+            yield return new WaitForSeconds(animTime);
+
+            rb.linearVelocity = Vector2.zero;
+        }
+        finally
+        {
+            EndRollIgnore(); // Always restores collisions
+        }
+
         state = (moveDir.sqrMagnitude > 0.01f) ? PlayerState.Move : PlayerState.Idle;
+    }
+
+    public void RegisterRollable(Collider2D other)
+    {
+        // IRollable might be on the collider object OR its parent
+        IRollable rollable = other.GetComponent<IRollable>() ?? other.GetComponentInParent<IRollable>();
+        if (rollable == null) return;
+
+        if (!rollableCollidersInRange.Contains(other))
+        {
+            rollableCollidersInRange.Add(other);
+            rollablesInRange.Add(rollable);
+        }
+    }
+
+    public void UnregisterRollable(Collider2D other)
+    {
+        int index = rollableCollidersInRange.IndexOf(other);
+        if (index >= 0)
+        {
+            rollableCollidersInRange.RemoveAt(index);
+            rollablesInRange.RemoveAt(index);
+        }
+    }
+
+    private void BeginRollIgnore()
+    {
+        if (playerSolidCollider == null) return;
+
+        ignoredThisRoll.Clear();
+
+        // Ignore everything currently in range and REMEMBER it
+        for (int i = 0; i < rollableCollidersInRange.Count; i++)
+        {
+            var c = rollableCollidersInRange[i];
+            if (c == null) continue;
+
+            Physics2D.IgnoreCollision(playerSolidCollider, c, true);
+            ignoredThisRoll.Add(c);
+        }
+
+        // Let rollables react (splash, sound, etc)
+        CallRollables();
+    }
+    private void EndRollIgnore()
+    {
+        if (playerSolidCollider == null) return;
+
+        // Restore EVERYTHING we ignored, even if it left range mid-roll
+        foreach (var c in ignoredThisRoll)
+        {
+            if (c == null) continue;
+            Physics2D.IgnoreCollision(playerSolidCollider, c, false);
+        }
+
+        ignoredThisRoll.Clear();
+    }
+
+    private void CallRollables()
+    {
+        for (int i = 0; i < rollablesInRange.Count; i++)
+            rollablesInRange[i]?.RollOverObject();
     }
 
     // =========================
@@ -428,5 +508,15 @@ public class Player : SimpleSingleton<Player>
 
         float stepCount = angle / step;
         return Mathf.FloorToInt(stepCount) % 8;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        
     }
 }

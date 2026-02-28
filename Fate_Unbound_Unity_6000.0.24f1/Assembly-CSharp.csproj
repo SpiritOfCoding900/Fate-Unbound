@@ -79,6 +79,7 @@
     <Compile Include="Assets\Script\DontDie.cs" />
     <Compile Include="Assets\Script\IntroSceneManager.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Game\GameBossFight.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Interface\ISmashable.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIPlaySfx.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UITutorialScreen.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIClosePanel.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerSpentDisplay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Script\SYSTEM\GameStart.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Interface\IInteractable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Weapons\WeaponScriptableObject.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Assets\Script\SYSTEM\Management Of Levels\GOLDEarned.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Interface\IRollable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIHudWorld.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerLevelDisplay.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIMainMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Interactable Objects\Object To Roll Over\River.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Interface\IEquippable.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Dialogues\DialogueSet.cs" />
@@ -149,6 +153,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIRewardSelection.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Interactable Objects\Object To Next Floor\DoorSceneLoader.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIMainCanvas.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -156,6 +161,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Game\PlayerRollSensor.cs" />
     <Compile Include="Assets\Script\SYSTEM\GameManager.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Levels\EXPEarned.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Audio\AudioManager.cs" />

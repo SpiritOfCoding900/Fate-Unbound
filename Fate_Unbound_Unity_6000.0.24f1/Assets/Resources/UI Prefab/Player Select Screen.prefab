@@ -5306,9 +5306,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a22b6a05b47b6d499a922f0b140b806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GM: {fileID: 0}
   characterCards:
   - NameOfClass: 
     nameText: {fileID: 5650631236662473903}
+    classIcon: {fileID: 8970001233541840680}
     hpText: {fileID: 5621860566501288237}
     mpText: {fileID: 2128220870826938673}
     atkText: {fileID: 4611881190297199502}
@@ -5318,6 +5320,7 @@ MonoBehaviour:
     descriptionText: {fileID: 5033820043648284742}
   - NameOfClass: 
     nameText: {fileID: 3775498409329611498}
+    classIcon: {fileID: 7466027099985067733}
     hpText: {fileID: 5361248405104624917}
     mpText: {fileID: 3350769372177888300}
     atkText: {fileID: 3424705111664166577}
@@ -5327,6 +5330,7 @@ MonoBehaviour:
     descriptionText: {fileID: 256154994555281152}
   - NameOfClass: 
     nameText: {fileID: 1151762003468972811}
+    classIcon: {fileID: 3107894401602865177}
     hpText: {fileID: 723724098482244943}
     mpText: {fileID: 1300800779949851956}
     atkText: {fileID: 2226840087240806579}

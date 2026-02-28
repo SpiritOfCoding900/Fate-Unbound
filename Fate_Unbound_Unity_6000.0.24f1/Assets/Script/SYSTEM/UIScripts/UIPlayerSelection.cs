@@ -11,6 +11,7 @@ public class CharacterCardUI
 {
     public string NameOfClass = "Put Class Name Here";
     public TMP_Text nameText;
+    public Image classIcon;
     public TMP_Text hpText;
     public TMP_Text mpText;
     public TMP_Text atkText;
@@ -44,7 +45,6 @@ public class UIPlayerSelection : MonoBehaviour
     private void Awake()
     {
         GM = FindFirstObjectByType<GameManager>(); // Unity 2022+
-        // GM = FindObjectOfType<GameManager>();   // older Unity
 
         if (GM == null)
             Debug.LogError("No GameManager found in the scene!", this);
@@ -74,6 +74,17 @@ public class UIPlayerSelection : MonoBehaviour
             {
                 var data = classList.classes[i];
                 var ui = characterCards[i];
+
+                if (data.loadedCharSprite == null)
+                    data.loadedCharSprite = Resources.Load<Sprite>(data.spritePath);
+
+                if (data.loadedCharSprite == null)
+                    Debug.LogError($"Sprite not found at Resources path: {data.spritePath}");
+                else
+                {
+                    ui.classIcon.sprite = data.loadedCharSprite;
+                    ui.classIcon.preserveAspect = true;
+                }
 
                 ui.NameOfClass = data.className;
                 ui.nameText.text = data.className;
