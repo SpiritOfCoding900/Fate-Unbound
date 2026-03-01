@@ -16,6 +16,6 @@ public class UIPlayerLevelDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _text.text = "LV. " + PlayerLevelUpStats.Instance.Level;
+        //_text.text = "LV. " + PlayerLevelUpStats.Instance.Level;
     }
 }

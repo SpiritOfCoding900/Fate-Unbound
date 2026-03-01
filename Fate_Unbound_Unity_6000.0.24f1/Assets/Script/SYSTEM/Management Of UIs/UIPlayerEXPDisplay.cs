@@ -20,7 +20,7 @@ public class UIPlayerEXPDisplay : MonoBehaviour
     {
         //Fill Exp Bar Image with Exp
         //Reset the FillBar
-        expImage.fillAmount = (PlayerLevelUpStats.Instance.experience - PlayerLevelUpStats.previousExperience) / (PlayerLevelUpStats.expNeeded - PlayerLevelUpStats.previousExperience);
+        //expImage.fillAmount = (PlayerLevelUpStats.Instance.experience - PlayerLevelUpStats.previousExperience) / (PlayerLevelUpStats.expNeeded - PlayerLevelUpStats.previousExperience);
 
         //Reset the FillBarc
         if (expImage.fillAmount == 1)

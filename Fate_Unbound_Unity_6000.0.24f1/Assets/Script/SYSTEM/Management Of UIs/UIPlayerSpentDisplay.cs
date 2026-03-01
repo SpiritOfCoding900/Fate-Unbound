@@ -16,6 +16,6 @@ public class UIPlayerSpentDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _text.text = $"{PlayerLevelUpStats.Instance.Spent}";
+        // _text.text = $"{PlayerLevelUpStats.Instance.Spent}";
     }
 }

@@ -16,6 +16,6 @@ public class UIPlayerKillDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _text.text = $"{PlayerLevelUpStats.Instance.Kills}";
+        //_text.text = $"{PlayerLevelUpStats.Instance.Kills}";
     }
 }

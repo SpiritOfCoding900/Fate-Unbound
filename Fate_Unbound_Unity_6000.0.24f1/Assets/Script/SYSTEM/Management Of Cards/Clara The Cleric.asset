@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e0237cf0af78942afbf04f6799635a, type: 3}
+  m_Name: Clara The Cleric
+  m_EditorClassIdentifier: 
+  cardName: Clara The Cleric
+  icon: {fileID: 110319356207044189, guid: 6ba8af09f01d9764e9afa74878cc512f, type: 3}
+  atkBonus: 0
+  defBonus: 2
+  hpBonus: 0
+  PriDesc: Gain +2 DEF.
+  SecDesc: Gain +1 ATK for each Enemy within your Attack Range.

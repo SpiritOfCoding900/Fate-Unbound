@@ -91,6 +91,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of JSONs\JSON Skills\SkillLoader.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Cards\FloatingCardPickup.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Resources\Resource Base\LootPush.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\GameUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Assets\Script\Core\GameObjectCore.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Dialogues\DialogueCharacterSlot.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIManager.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Cards\CardData.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Levels\GOLDEarned.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIHudWorld.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerEXPDisplay.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Interactable Objects\Object To Smash\Crate.cs" />
     <Compile Include="Assets\Art\Characters\Enemies\PixelArtStudio\Scripts\DemoPlayer.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerLevelDisplay.cs" />
     <Compile Include="Assets\Script\SYSTEM\UIScripts\UIMainMenu.cs" />
@@ -147,6 +150,7 @@
     <Compile Include="Assets\Script\SYSTEM\Management Of Interactable Objects\Object To Roll Over\River.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Interface\IEquippable.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Game\PlayerSmashSensor.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Dialogues\DialogueSet.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Weapons\Weapon Base\WeaponItem.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Enemies\Enemy.cs" />
@@ -162,12 +166,14 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Game\PlayerRollSensor.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Cards\CardSlotsUI.cs" />
     <Compile Include="Assets\Script\SYSTEM\GameManager.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Levels\EXPEarned.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Audio\AudioManager.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Maps\ChunkTrigger.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Weapons\Weapon Behaviours\KnifeBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Cards\CardEquipment.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Weapons\Weapon Base\ProjectileWeaponBehaviour.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of UIs\UIPlayerItemDisplay.cs" />
   </ItemGroup>

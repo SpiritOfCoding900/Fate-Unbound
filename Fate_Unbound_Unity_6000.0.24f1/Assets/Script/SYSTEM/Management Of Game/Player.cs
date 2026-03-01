@@ -69,6 +69,23 @@ public class Player : SimpleSingleton<Player>
     private bool queuedNextAttack = false;  // click buffer during Attack1
 
     // =========================
+    // Attack Range Direction
+    // =========================
+    [SerializeField] private Transform attackRange;          // drag your AttackRange here
+    [SerializeField] private Transform[] attackSockets = new Transform[8]; // N,NE,E,SE,S,SW,W,NW
+    [SerializeField] private bool rotateAttackRangeToSocket = true; // optional
+    private int facingIndex = 4; // 0=N,1=NE,2=E,3=SE,4=S,5=SW,6=W,7=NW (default South)
+
+    // =========================
+    // Smash (ISmashable)
+    // =========================
+    [Header("Smash (ISmashable)")]
+    [SerializeField] private bool smashClosestTarget = true;
+
+    private readonly List<ISmashable> smashablesInRange = new List<ISmashable>();
+    private readonly List<Collider2D> smashableCollidersInRange = new List<Collider2D>();
+
+    // =========================
     // Roll
     // =========================
     [Header("Player's Roll Settings")]
@@ -169,6 +186,13 @@ public class Player : SimpleSingleton<Player>
         CurrentMP = MaxMP;
 
         state = PlayerState.Idle;
+
+        facingIndex = 4; // South
+        if (attackRange != null && attackSockets != null && attackSockets.Length >= 8 && attackSockets[4] != null)
+        {
+            attackRange.position = attackSockets[4].position;
+            if (rotateAttackRangeToSocket) attackRange.rotation = attackSockets[4].rotation;
+        }
     }
 
     private void OnDisable()
@@ -179,6 +203,7 @@ public class Player : SimpleSingleton<Player>
     void Update()
     {
         ReadMoveInput();
+        UpdateAttackRangeSocket();
         PlayerInvincibility();
 
         // Timers
@@ -372,6 +397,82 @@ public class Player : SimpleSingleton<Player>
     {
         for (int i = 0; i < rollablesInRange.Count; i++)
             rollablesInRange[i]?.RollOverObject();
+    }
+
+    // =========================
+    // Attack Range Socket
+    // =========================
+    private void UpdateAttackRangeSocket()
+    {
+        if (attackRange == null) return;
+        if (attackSockets == null || attackSockets.Length < 8) return;
+
+        // Pick facing from current move input, else last moved direction
+        Vector2 dir = (moveDir.sqrMagnitude > 0.01f) ? moveDir : lastMovedVector;
+        if (dir.sqrMagnitude < 0.01f) dir = Vector2.down;
+
+        int newIndex = DirectionToIndex(dir);
+
+        // If you want: only update when direction changes
+        if (newIndex == facingIndex) return;
+        facingIndex = newIndex;
+
+        Transform socket = attackSockets[facingIndex];
+        if (socket == null) return;
+
+        // Snap AttackRange to socket position
+        attackRange.position = socket.position;
+
+        // Optional: match rotation (usually not needed for circle, useful for box)
+        if (rotateAttackRangeToSocket)
+            attackRange.rotation = socket.rotation;
+    }
+
+    // =========================
+    // Smash Object
+    // =========================
+    public void RegisterSmashable(Collider2D other)
+    {
+        // ISmashable might be on collider object OR parent
+        ISmashable smashable = other.GetComponent<ISmashable>() ?? other.GetComponentInParent<ISmashable>();
+        if (smashable == null) return;
+
+        // Optional: ignore trigger colliders (usually you want the solid one)
+        if (other.isTrigger) return;
+
+        if (!smashableCollidersInRange.Contains(other))
+        {
+            smashableCollidersInRange.Add(other);
+            smashablesInRange.Add(smashable);
+        }
+    }
+    public void UnregisterSmashable(Collider2D other)
+    {
+        int index = smashableCollidersInRange.IndexOf(other);
+        if (index >= 0)
+        {
+            smashableCollidersInRange.RemoveAt(index);
+            smashablesInRange.RemoveAt(index);
+        }
+    }
+
+    // Called by Animation Event on the attack clip (the "hit" frame)
+    public void SmashFrame()
+    {
+        if (smashablesInRange.Count == 0) return;
+
+        // Copy so Destroy() / trigger exits won't mutate the list mid-loop
+        var copy = new List<ISmashable>(smashablesInRange);
+
+        for (int i = 0; i < copy.Count; i++)
+        {
+            if (copy[i] == null) continue;
+            copy[i].SmashThisObject();
+        }
+
+        // Optional: clear lists immediately so next frame doesn't try to smash already-destroyed stuff
+        smashablesInRange.Clear();
+        smashableCollidersInRange.Clear();
     }
 
     // =========================

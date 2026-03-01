@@ -51,13 +51,6 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         if (HP <= 0)
         {
-            // Give Exp
-            float expValueWhenDead = 2f;
-            PlayerLevelUpStats.Instance.SetExperience(expValueWhenDead);
-
-            // Count Kills
-            PlayerLevelUpStats.Instance.Kills += 1;
-
             // Drop Loot
             foreach (var loot in lootTable)
             {

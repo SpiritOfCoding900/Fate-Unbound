@@ -16,6 +16,6 @@ public class UIPlayerItemDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _text.text = $"{PlayerLevelUpStats.Instance.Items}";
+        //_text.text = $"{PlayerLevelUpStats.Instance.Items}";
     }
 }

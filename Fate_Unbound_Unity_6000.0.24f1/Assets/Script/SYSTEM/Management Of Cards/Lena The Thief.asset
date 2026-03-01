@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e0237cf0af78942afbf04f6799635a, type: 3}
+  m_Name: Lena The Thief
+  m_EditorClassIdentifier: 
+  cardName: Lena The Thief
+  icon: {fileID: -2678076930070377518, guid: 2fc73b3a1239c9b47a329ae9024a5427, type: 3}
+  atkBonus: 0
+  defBonus: 0
+  hpBonus: 2
+  PriDesc: Gain +2 HP.
+  SecDesc: Gain +1 HP for each Enemies killed.
