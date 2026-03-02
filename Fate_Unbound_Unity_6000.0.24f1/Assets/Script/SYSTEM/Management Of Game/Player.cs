@@ -24,17 +24,26 @@ public class Player : SimpleSingleton<Player>
     [Header("Player's Current Stats: ")]
     public string className;
 
-    public float MaxHP = 10;
-    public float CurrentHP;
+    [SerializeField] public float MaxHP = 10;
+    [SerializeField] public float CurrentHP;
 
-    public float MaxMP = 10;
-    public float CurrentMP;
+    [SerializeField] public float MaxMP = 10;
+    [SerializeField] public float CurrentMP;
 
-    public float ATK = 5;
-    public float DEF = 5;
+    [SerializeField] public float ATK = 5;
+    [SerializeField] public float DEF = 5;
 
-    public float dodgeRate = 0;
-    public float moveSpeed = 10;
+    [SerializeField] public float dodgeRate = 0;
+    [SerializeField] public float moveSpeed = 10;
+
+    [Header("Base Stats (before cards)")]
+    [SerializeField] private float baseMaxHP;
+    [SerializeField] private float baseATK;
+    [SerializeField] private float baseDEF;
+
+    private int bonusHP;
+    private int bonusATK;
+    private int bonusDEF;
 
     [TextArea(3, 5)]
     public string description;
@@ -84,6 +93,13 @@ public class Player : SimpleSingleton<Player>
 
     private readonly List<ISmashable> smashablesInRange = new List<ISmashable>();
     private readonly List<Collider2D> smashableCollidersInRange = new List<Collider2D>();
+
+    // =========================
+    // Damage (IDamagable)
+    // =========================
+    [Header("Damage (IDamagable)")]
+    private readonly List<IDamagable> damageablesInRange = new List<IDamagable>();
+    private readonly List<Collider2D> damageableCollidersInRange = new List<Collider2D>();
 
     // =========================
     // Roll
@@ -167,6 +183,10 @@ public class Player : SimpleSingleton<Player>
     // =========================
     private void Awake()
     {
+        baseMaxHP = MaxHP;
+        baseATK = ATK;
+        baseDEF = DEF;
+
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -243,6 +263,28 @@ public class Player : SimpleSingleton<Player>
         }
     }
 
+    public void ApplyCardBonuses(int hp, int atk, int def)
+    {
+        // Save old max so we can adjust CurrentHP nicely
+        float oldMaxHP = MaxHP;
+
+        bonusHP = hp;
+        bonusATK = atk;
+        bonusDEF = def;
+
+        MaxHP = baseMaxHP + bonusHP;
+        ATK = baseATK + bonusATK;
+        DEF = baseDEF + bonusDEF;
+
+        // Adjust current HP:
+        // If MaxHP increased, give the player the extra HP (feels good).
+        // If MaxHP decreased, clamp down.
+        float delta = MaxHP - oldMaxHP;
+        if (delta > 0) CurrentHP += delta;
+
+        CurrentHP = Mathf.Clamp(CurrentHP, 0, MaxHP);
+    }
+
     // =========================
     // Input
     // =========================
@@ -298,7 +340,6 @@ public class Player : SimpleSingleton<Player>
 
         StartCoroutine(RollRoutineFSM());
     }
-
     IEnumerator RollRoutineFSM()
     {
         state = PlayerState.Roll;
@@ -336,7 +377,6 @@ public class Player : SimpleSingleton<Player>
 
         state = (moveDir.sqrMagnitude > 0.01f) ? PlayerState.Move : PlayerState.Idle;
     }
-
     public void RegisterRollable(Collider2D other)
     {
         // IRollable might be on the collider object OR its parent
@@ -349,7 +389,6 @@ public class Player : SimpleSingleton<Player>
             rollablesInRange.Add(rollable);
         }
     }
-
     public void UnregisterRollable(Collider2D other)
     {
         int index = rollableCollidersInRange.IndexOf(other);
@@ -359,7 +398,6 @@ public class Player : SimpleSingleton<Player>
             rollablesInRange.RemoveAt(index);
         }
     }
-
     private void BeginRollIgnore()
     {
         if (playerSolidCollider == null) return;
@@ -392,7 +430,6 @@ public class Player : SimpleSingleton<Player>
 
         ignoredThisRoll.Clear();
     }
-
     private void CallRollables()
     {
         for (int i = 0; i < rollablesInRange.Count; i++)
@@ -455,24 +492,45 @@ public class Player : SimpleSingleton<Player>
             smashablesInRange.RemoveAt(index);
         }
     }
+    public void RegisterDamageable(Collider2D other)
+    {
+        // IDamagable might be on collider OR parent
+        IDamagable dmg = other.GetComponent<IDamagable>() ?? other.GetComponentInParent<IDamagable>();
+        if (dmg == null) return;
+
+        // ignore trigger colliders if you want only solid colliders
+        // (optional: depends on your setup)
+        // if (other.isTrigger) return;
+
+        if (!damageableCollidersInRange.Contains(other))
+        {
+            damageableCollidersInRange.Add(other);
+            damageablesInRange.Add(dmg);
+        }
+    }
+    public void UnregisterDamageable(Collider2D other)
+    {
+        int index = damageableCollidersInRange.IndexOf(other);
+        if (index >= 0)
+        {
+            damageableCollidersInRange.RemoveAt(index);
+            damageablesInRange.RemoveAt(index);
+        }
+    }
 
     // Called by Animation Event on the attack clip (the "hit" frame)
     public void SmashFrame()
     {
-        if (smashablesInRange.Count == 0) return;
-
-        // Copy so Destroy() / trigger exits won't mutate the list mid-loop
-        var copy = new List<ISmashable>(smashablesInRange);
-
-        for (int i = 0; i < copy.Count; i++)
+        // Remove destroyed objects safely
+        for (int i = damageablesInRange.Count - 1; i >= 0; i--)
         {
-            if (copy[i] == null) continue;
-            copy[i].SmashThisObject();
+            if (damageablesInRange[i] == null)
+                damageablesInRange.RemoveAt(i);
         }
 
-        // Optional: clear lists immediately so next frame doesn't try to smash already-destroyed stuff
-        smashablesInRange.Clear();
-        smashableCollidersInRange.Clear();
+        // Now hit everyone still inside
+        for (int i = 0; i < damageablesInRange.Count; i++)
+            damageablesInRange[i].TakeDamage(ATK);
     }
 
     // =========================

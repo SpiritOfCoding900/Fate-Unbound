@@ -15,8 +15,9 @@ public class Enemy : MonoBehaviour, IDamagable
     Transform player;
     public float HP;
     public float moveSpeed;
+    public float attackRange;
     private bool isMoving = true;
-
+    public bool chasePlayer = true;
     [Header("Loot Table Of Items: ")]
     public List<LootDrop> lootTable;
 
@@ -34,16 +35,22 @@ public class Enemy : MonoBehaviour, IDamagable
         else
             isMoving = false;
 
-        if (isMoving)
-        {
+        float dist = Vector2.Distance(transform.position, player.transform.position);
+
+        if (dist <= attackRange)
+            chasePlayer = false; // stop moving closer
+        else
+            chasePlayer = true;  // keep chasing
+
+        if (isMoving && chasePlayer)
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
-        }
 
         EnemyDead();
     }
 
     public void TakeDamage(float damage)
     {
+        AudioManager.Instance.SFXSound(SoundID.Confirm);
         HP -= damage;
     }
 
@@ -51,6 +58,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         if (HP <= 0)
         {
+            AudioManager.Instance.SFXSound(SoundID.Cancel);
             // Drop Loot
             foreach (var loot in lootTable)
             {

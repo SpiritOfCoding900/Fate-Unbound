@@ -159,7 +159,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Lena The Thief_0: 8434190229694329138
+      Lena The Thief_1: -7843864510545349379
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

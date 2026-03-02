@@ -446,7 +446,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 767274327
-  m_SortingOrder: 0
+  m_SortingOrder: 200
   m_TargetDisplay: 0
 --- !u!114 &3051518201422718387
 MonoBehaviour:
@@ -865,7 +865,6 @@ GameObject:
   - component: {fileID: 2805025528118483582}
   - component: {fileID: 5217968197170785976}
   - component: {fileID: 2637046683686232443}
-  - component: {fileID: 5125549307425368410}
   - component: {fileID: 4448845851572767382}
   m_Layer: 3
   m_Name: Player
@@ -1065,6 +1064,9 @@ MonoBehaviour:
   DEF: 5
   dodgeRate: 0
   moveSpeed: 5
+  baseMaxHP: 0
+  baseATK: 0
+  baseDEF: 0
   description: 
   ID: 0
   invincibilityDuration: 1.5
@@ -1134,19 +1136,6 @@ MonoBehaviour:
   - Paladin_Run_SW
   - Paladin_Run_W
   - Paladin_Run_NW
---- !u!114 &5125549307425368410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4334532570694253497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e358329fbb5c248b79db183b91e3ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Gold: 0
 --- !u!114 &4448845851572767382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1161,6 +1150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSlots: 5
   slotsUI: {fileID: 9056774819945951811}
+  player: {fileID: 2637046683686232443}
 --- !u!1 &5398457031831802626
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,7 +1217,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 767274327
-  m_SortingOrder: 101
+  m_SortingOrder: 200
   m_TargetDisplay: 0
 --- !u!114 &5343610383235388089
 MonoBehaviour:
@@ -1621,7 +1611,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 767274327
-  m_SortingOrder: 0
+  m_SortingOrder: 200
   m_TargetDisplay: 0
 --- !u!114 &7723755649630745440
 MonoBehaviour:
@@ -1777,7 +1767,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 767274327
-  m_SortingOrder: 0
+  m_SortingOrder: 200
   m_TargetDisplay: 0
 --- !u!114 &5880841911359291579
 MonoBehaviour:
@@ -1829,6 +1819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8753805446826339432}
   - component: {fileID: 3357354330564474186}
+  - component: {fileID: 7474610936708480942}
   - component: {fileID: 6308765836130794456}
   m_Layer: 3
   m_Name: AttackRange
@@ -1888,6 +1879,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.25
+--- !u!114 &7474610936708480942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6814637386388852110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625a940011d1d994e8dea202a1c32106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2637046683686232443}
 --- !u!114 &6308765836130794456
 MonoBehaviour:
   m_ObjectHideFlags: 0

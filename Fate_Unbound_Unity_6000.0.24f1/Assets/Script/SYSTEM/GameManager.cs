@@ -65,4 +65,16 @@ public class GameManager : SimpleSingleton<GameManager>
         player.description = chosenStats.description;
         player.ID = chosenStats.ID;
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Re-acquire player in the new scene
+        CurrentPlayer = FindFirstObjectByType<Player>();
+    }
 }

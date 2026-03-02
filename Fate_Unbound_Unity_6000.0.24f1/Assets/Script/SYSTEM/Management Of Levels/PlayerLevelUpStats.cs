@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
@@ -14,7 +14,7 @@ public class PlayerLevelUpStats : MonoBehaviour
 
     private void Start()
     {
-        Gold = 0;
+        // Gold = 0;
     }
 
     private void Awake()

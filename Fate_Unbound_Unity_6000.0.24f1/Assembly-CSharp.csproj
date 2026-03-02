@@ -74,6 +74,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Dialogues\DialogueManager.cs" />
     <Compile Include="Assets\Script\SYSTEM\Management Of Game\GameTimer.cs" />
+    <Compile Include="Assets\Script\SYSTEM\Management Of Game\AttackRangeTrigger.cs" />
     <Compile Include="Assets\Art\Characters\Enemies\PixelArtStudio\Scripts\AnimationEventsHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Script\DontDie.cs" />
